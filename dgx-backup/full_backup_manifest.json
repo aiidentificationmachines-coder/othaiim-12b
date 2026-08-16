@@ -1,0 +1,523 @@
+{
+  "manifest_version": "1.0",
+  "manifest_date": "2026-08-16",
+  "created_by": "git_permanent_fix.sh backup system",
+  "dgx_spark": {
+    "host": "10.0.0.175",
+    "user": "christ_is_king",
+    "user_home": "/home/christ_is_king",
+    "os": "NVIDIA DGX Spark (Ubuntu/Debian-based)",
+    "ssh_port": 22,
+    "ssh_command": "ssh christ_is_king@10.0.0.175"
+  },
+  "project": {
+    "name": "othaiim-12b",
+    "path": "/home/christ_is_king/othaiim-12b",
+    "description": "Othaiim 12B parameter AI model project",
+    "git_commits": 8,
+    "total_files": "97+",
+    "branch": "dgx-spark",
+    "file_categories": [
+      "Python agent scripts",
+      "Training data",
+      "Builder code",
+      "Local API",
+      "Served HTML pages",
+      "System configs",
+      "Architecture docs"
+    ]
+  },
+  "github": {
+    "repository": "othaiim-12b",
+    "branch": "dgx-spark",
+    "remote_name": "origin",
+    "backup_strategy": "incremental push with git_permanent_fix.sh pre-flight"
+  },
+  "base44_storage": {
+    "strategy": "upload critical files as backup redundancy layer",
+    "file_types": "configs, scripts, manifests, docs"
+  },
+  "email_summary": {
+    "strategy": "email completion summary after backup_to_github.sh runs",
+    "trigger": "on successful or failed backup"
+  },
+  "backup_priorities": {
+    "P0_CRITICAL": "Cannot be regenerated — must be backed up to GitHub + Base44",
+    "P1_HIGH": "Difficult to regenerate — backed up to GitHub",
+    "P2_MEDIUM": "Can be regenerated with effort — backed up to GitHub",
+    "P3_LOW": "Easily regenerated — standard git tracking only"
+  },
+  "files_and_directories": [
+    {
+      "path": "/home/christ_is_king/othaiim-12b/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Root project directory — entire repository",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*"],
+      "exclude_patterns": [".git/objects/pack/*.pack.tmp", "__pycache__/", "*.pyc", ".venv/", "node_modules/"],
+      "notes": "Entire project tree is the primary backup target"
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.git/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Git repository metadata — history, objects, refs, configs",
+      "backup_targets": ["github"],
+      "include_patterns": ["config", "description", "HEAD", "refs/**", "objects/**", "hooks/**", "info/**", "packed-refs"],
+      "exclude_patterns": ["index.lock", "*.tmp"],
+      "notes": "Git history is backed up via push to GitHub. Local .git is the source of truth."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.git/config",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Git configuration — remote URLs, branch settings, resilience config",
+      "backup_targets": ["github", "base44_storage"],
+      "notes": "Contains GitHub remote URL and all resilience settings applied by git_permanent_fix.sh"
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.git/hooks/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Git hooks — pre-commit hook for index corruption prevention",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["pre-commit"],
+      "notes": "Custom pre-commit hook installed by git_permanent_fix.sh"
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.gitignore",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Git ignore rules",
+      "backup_targets": ["github"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/README.md",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Project README",
+      "backup_targets": ["github"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/agent/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Python agent scripts — core AI agent logic",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.md", "**/*.txt"],
+      "exclude_patterns": ["__pycache__/", "*.pyc", ".venv/"],
+      "notes": "Primary agent implementation. All Python scripts must be preserved."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/agent/*.py",
+      "type": "glob_pattern",
+      "priority": "P0_CRITICAL",
+      "description": "Python agent scripts",
+      "backup_targets": ["github", "base44_storage"],
+      "notes": "All .py files in agent/ root"
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/training_data/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Training data for the 12B model — cannot be regenerated",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.json", "**/*.jsonl", "**/*.csv", "**/*.txt", "**/*.parquet"],
+      "exclude_patterns": ["*.bin", "*.safetensors", "*.pt", "*.ckpt"],
+      "notes": "Training data is critical. Large binary model weights excluded (see model_weights/)."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/builder/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Builder code — model construction and configuration",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.sh"],
+      "exclude_patterns": ["__pycache__/", "*.pyc"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/api/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Local API server code — REST endpoints for model inference",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.sh", "**/*.txt"],
+      "exclude_patterns": ["__pycache__/", "*.pyc"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/html/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Served HTML pages — web interface for the model",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.html", "**/*.css", "**/*.js", "**/*.svg", "**/*.png", "**/*.ico"],
+      "exclude_patterns": ["node_modules/"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/config/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "System configuration files — model config, server config, environment",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.conf", "**/*.env", "**/*.ini", "**/*.toml"],
+      "notes": "All config files are P0 — losing these means losing model/server configuration."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/docs/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Architecture documentation — design docs, API docs, setup guides",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.md", "**/*.rst", "**/*.txt", "**/*.pdf", "**/*.png", "**/*.svg"],
+      "notes": "Architecture docs are critical for reconstruction."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/scripts/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Utility scripts — deployment, testing, maintenance",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.sh", "**/*.py", "**/*.js"],
+      "exclude_patterns": ["__pycache__/", "*.pyc"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/requirements.txt",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Python package dependencies",
+      "backup_targets": ["github", "base44_storage"],
+      "notes": "Critical for reconstruction — defines exact dependency versions."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/setup.py",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Python package setup script",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/pyproject.toml",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Modern Python project configuration",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/Makefile",
+      "type": "file",
+      "priority": "P1_HIGH",
+      "description": "Build/run automation commands",
+      "backup_targets": ["github"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/Dockerfile",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Container build definition",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/docker-compose.yml",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Docker Compose orchestration config",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.env",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Environment variables — API keys, model paths, DB connections",
+      "backup_targets": ["base44_storage"],
+      "exclude_from_git": true,
+      "notes": "WARNING: Contains secrets. NOT pushed to GitHub. Backed up to Base44 storage only. Must be manually re-created on reconstruction."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.env.example",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Environment variable template (no secrets)",
+      "backup_targets": ["github", "base44_storage"],
+      "notes": "Template for .env — safe to push to GitHub."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/model_weights/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Model weight files (12B parameter) — large binaries",
+      "backup_targets": ["base44_storage"],
+      "include_patterns": ["**/*.safetensors", "**/*.bin", "**/*.pt", "**/*.ckpt", "**/*.gguf"],
+      "exclude_from_git": true,
+      "notes": "Large binary files (potentially 20+ GB for 12B model). Excluded from git (would exceed GitHub limits). Backed up to Base44 storage or external storage. Can be re-downloaded from HuggingFace if model is published."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/tokenizer/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "Tokenizer files — vocabulary and merges",
+      "backup_targets": ["github", "base44_storage"],
+      "include_patterns": ["**/*.json", "**/*.txt", "**/*.model"],
+      "notes": "Tokenizer is required for model inference."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/logs/",
+      "type": "directory",
+      "priority": "P3_LOW",
+      "description": "Application and training logs — regenerable",
+      "backup_targets": ["github"],
+      "include_patterns": ["**/*.log", "**/*.txt"],
+      "exclude_from_git": true,
+      "notes": "Logs are low priority. Typically excluded from git. Can be regenerated."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/data/",
+      "type": "directory",
+      "priority": "P2_MEDIUM",
+      "description": "General data directory — datasets, caches, intermediate results",
+      "backup_targets": ["github"],
+      "include_patterns": ["**/*.json", "**/*.jsonl", "**/*.csv", "**/*.parquet", "**/*.txt"],
+      "exclude_patterns": ["*.bin", "*.safetensors", "*.pt", "*.npy", "*.npz", "__pycache__/", "*.pyc"],
+      "notes": "Mixed priority data. Binary arrays excluded (can be regenerated)."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/tests/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Test suite — unit tests, integration tests",
+      "backup_targets": ["github"],
+      "include_patterns": ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml"],
+      "exclude_patterns": ["__pycache__/", "*.pyc", ".pytest_cache/"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/utils/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Utility modules — helper functions, shared code",
+      "backup_targets": ["github"],
+      "include_patterns": ["**/*.py", "**/*.json", "**/*.sh"],
+      "exclude_patterns": ["__pycache__/", "*.pyc"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/notebooks/",
+      "type": "directory",
+      "priority": "P2_MEDIUM",
+      "description": "Jupyter notebooks — experiments, analysis",
+      "backup_targets": ["github"],
+      "include_patterns": ["**/*.ipynb", "**/*.py"],
+      "exclude_patterns": [".ipynb_checkpoints/"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/checkpoints/",
+      "type": "directory",
+      "priority": "P1_HIGH",
+      "description": "Training checkpoints — model state snapshots",
+      "backup_targets": ["base44_storage"],
+      "include_patterns": ["**/*.safetensors", "**/*.bin", "**/*.pt", "**/*.json"],
+      "exclude_from_git": true,
+      "notes": "Large binary checkpoint files. Excluded from git. Backed up to Base44 storage. The optimizer state JSON is small and can go to git."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/.gitlab-ci.yml",
+      "type": "file",
+      "priority": "P2_MEDIUM",
+      "description": "GitLab CI pipeline definition",
+      "backup_targets": ["github"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/CONTRIBUTING.md",
+      "type": "file",
+      "priority": "P3_LOW",
+      "description": "Contributing guidelines",
+      "backup_targets": ["github"]
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/LICENSE",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Software license",
+      "backup_targets": ["github"]
+    }
+  ],
+  "system_level_backups": [
+    {
+      "path": "/home/christ_is_king/.bashrc",
+      "type": "file",
+      "priority": "P1_HIGH",
+      "description": "Shell configuration — aliases, PATH, environment setup",
+      "backup_targets": ["base44_storage"],
+      "notes": "Needed to reconstruct the user's shell environment."
+    },
+    {
+      "path": "/home/christ_is_king/.profile",
+      "type": "file",
+      "priority": "P1_HIGH",
+      "description": "Login profile — environment variables, startup commands",
+      "backup_targets": ["base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/.ssh/",
+      "type": "directory",
+      "priority": "P0_CRITICAL",
+      "description": "SSH keys and configuration — required for GitHub access and DGX access",
+      "backup_targets": ["base44_storage"],
+      "exclude_from_git": true,
+      "notes": "SECURITY SENSITIVE: Contains private keys. Backed up to Base44 storage ONLY. Never pushed to git. Required for SSH-based git push to GitHub."
+    },
+    {
+      "path": "/home/christ_is_king/.gitconfig",
+      "type": "file",
+      "priority": "P1_HIGH",
+      "description": "Global git configuration — user name, email, credential helper",
+      "backup_targets": ["base44_storage"]
+    },
+    {
+      "path": "/home/christ_is_king/.local/bin/dgx_git_health_check.sh",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Git health check script — installed by git_permanent_fix.sh",
+      "backup_targets": ["base44_storage"],
+      "notes": "Must be re-installed on reconstruction."
+    },
+    {
+      "path": "/var/log/dgx_git_health.log",
+      "type": "file",
+      "priority": "P3_LOW",
+      "description": "Git health check log — regenerable",
+      "backup_targets": [],
+      "notes": "Log file. Not backed up — regenerated by the health check cron job."
+    },
+    {
+      "path": "/usr/local/bin/dgx_git_health_check.sh",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "System-wide git health check script (if installed with sudo)",
+      "backup_targets": ["base44_storage"]
+    },
+    {
+      "path": "crontab -l (user christ_is_king)",
+      "type": "crontab",
+      "priority": "P0_CRITICAL",
+      "description": "User crontab entries — includes hourly git health check",
+      "backup_targets": ["base44_storage"],
+      "notes": "Must be re-installed on reconstruction. Contains the hourly git fsck + auto-repair cron job."
+    },
+    {
+      "path": "/home/christ_is_king/.conda/",
+      "type": "directory",
+      "priority": "P2_MEDIUM",
+      "description": "Conda environments — Python environment for the project",
+      "backup_targets": ["base44_storage"],
+      "exclude_from_git": true,
+      "notes": "Large. Backed up as environment.yml export, not the full conda dir. Reconstructed via conda env create."
+    },
+    {
+      "path": "/home/christ_is_king/othaiim-12b/environment.yml",
+      "type": "file",
+      "priority": "P0_CRITICAL",
+      "description": "Conda environment specification",
+      "backup_targets": ["github", "base44_storage"],
+      "notes": "If present, defines the exact conda environment for reconstruction."
+    },
+    {
+      "path": "pip freeze output",
+      "type": "generated",
+      "priority": "P0_CRITICAL",
+      "description": "Complete pip package list with versions",
+      "backup_targets": ["base44_storage"],
+      "notes": "Generated by backup_to_github.sh via 'pip freeze > pip_freeze.txt'. Essential for reconstruction."
+    },
+    {
+      "path": "conda env export output",
+      "type": "generated",
+      "priority": "P0_CRITICAL",
+      "description": "Complete conda environment export",
+      "backup_targets": ["base44_storage"],
+      "notes": "Generated by backup_to_github.sh via 'conda env export'. Essential for reconstruction."
+    }
+  ],
+  "backup_scripts": [
+    {
+      "name": "git_permanent_fix.sh",
+      "location": "sandbox workspace + /home/christ_is_king/othaiim-12b/scripts/git_permanent_fix.sh",
+      "priority": "P0_CRITICAL",
+      "description": "Permanently fixes git index corruption and installs prevention mechanisms",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "name": "backup_to_github.sh",
+      "location": "sandbox workspace + /home/christ_is_king/othaiim-12b/scripts/backup_to_github.sh",
+      "priority": "P0_CRITICAL",
+      "description": "Incremental backup — fixes git, stages, commits, pushes, uploads to Base44, emails summary",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "name": "reconstruct_dgx.sh",
+      "location": "sandbox workspace + /home/christ_is_king/othaiim-12b/scripts/reconstruct_dgx.sh",
+      "priority": "P0_CRITICAL",
+      "description": "Full reconstruction script — rebuilds entire DGX environment from GitHub + Base44",
+      "backup_targets": ["github", "base44_storage"]
+    },
+    {
+      "name": "full_backup_manifest.json",
+      "location": "sandbox workspace + /home/christ_is_king/othaiim-12b/scripts/full_backup_manifest.json",
+      "priority": "P0_CRITICAL",
+      "description": "This file — complete manifest of all files/directories to backup",
+      "backup_targets": ["github", "base44_storage"]
+    }
+  ],
+  "exclusions": {
+    "description": "Patterns excluded from all backups (regenerable or too large)",
+    "git_ignore_patterns": [
+      "__pycache__/",
+      "*.pyc",
+      "*.pyo",
+      ".venv/",
+      "venv/",
+      "node_modules/",
+      ".ipynb_checkpoints/",
+      ".pytest_cache/",
+      "*.egg-info/",
+      ".eggs/",
+      "build/",
+      "dist/",
+      "*.log",
+      "*.tmp",
+      ".env"
+    ],
+    "large_file_exclusions": [
+      "*.safetensors > 50MB",
+      "*.bin > 50MB",
+      "*.pt > 50MB",
+      "*.ckpt > 50MB",
+      "*.gguf > 50MB",
+      "*.npy > 100MB",
+      "*.npz > 100MB",
+      "*.parquet > 500MB"
+    ],
+    "notes": "Large model weights and checkpoints are backed up to Base44 storage separately, not via git."
+  },
+  "reconstruction_order": [
+    "1. Run reconstruct_dgx.sh on a fresh DGX Spark",
+    "2. Script restores SSH keys from Base44 storage",
+    "3. Script clones from GitHub (dgx-spark branch)",
+    "4. Script restores .env from Base44 storage",
+    "5. Script installs Python dependencies (pip + conda)",
+    "6. Script restores model weights from Base44 storage",
+    "7. Script runs git_permanent_fix.sh to install prevention mechanisms",
+    "8. Script installs crontab entries",
+    "9. Script starts API server and verifies health"
+  ],
+  "verification_checklist": [
+    "git fsck --full passes with no errors",
+    "git log shows all 8+ commits",
+    "All 97+ files present and match manifest",
+    "pre-commit hook is installed and executable",
+    "crontab has hourly git health check entry",
+    "git config shows resilience settings (gc.auto, pack.threads, core.preloadindex, etc.)",
+    "GitHub push succeeds without index corruption",
+    "API server starts and responds on expected port",
+    "Python imports succeed (no missing modules)",
+    "Model weights load successfully"
+  ]
+}
