@@ -1,0 +1,39 @@
+[Unit]
+Description=Othaiim Tunnel Watchdog — multi-layer remote-access health monitor
+Documentation=man:systemd.unit(5)
+After=network.target
+Wants=network-online.target tailscaled.service cloudflared-named-othaiim.service
+
+[Service]
+Type=simple
+User=christ_is_king
+Group=christ_is_king
+WorkingDirectory=/home/christ_is_king/othaiim-12b
+
+# Environment: set GMAIL_APP_PASSWORD so the watchdog can email alerts.
+# To configure, create /etc/othaiim/tunnel.env with:
+#   GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx
+# Then uncomment the EnvironmentFile line below.
+#EnvironmentFile=/etc/othaiim/tunnel.env
+#Environment=GMAIL_APP_PASSWORD=
+
+ExecStart=/home/christ_is_king/othaiim-12b/tunnel_watchdog_venv/bin/python /home/christ_is_king/othaiim-12b/tunnel_watchdog.py
+
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/christ_is_king/othaiim-12b /home/christ_is_king/.cloudflared
+PrivateTmp=true
+
+# Allow the watchdog to manage systemd services (restart tunnels)
+# Requires polkit rule or running as root; if running as non-root user,
+# add a sudoers entry. For simplicity the watchdog uses systemctl which
+# works when the user has sufficient privileges or the service is run as root.
+
+[Install]
+WantedBy=multi-user.target
