@@ -1,0 +1,15 @@
+# Othaiim-12B .gitignore
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.log
+node_modules/
+.DS_Store
+*.swp
+*.swo
+.git/index.lock
+checkpoints/*.pt
+checkpoints/*.bin
+models/base/
+*.gguf
